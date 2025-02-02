@@ -2,9 +2,41 @@ import { Client } from '../models/user.model';
 import errResponse from '../utils/errResponse';
 import sucResponse from '../utils/sucResponse';
 
+// export const signup = async (req: any, res: any, next: any) => {
+//   try {
+//     console.log(req.body);
+//     const { username, email, password } = req.body;
+
+//     if (!username || !email || !password) {
+//       throw new errResponse('Kindly Provide all arguments', 400);
+//     }
+
+//     const clientExist = await Client.findOne({ username: username });
+
+//     if (clientExist) {
+//       throw new errResponse('Username already exists', 400);
+//     }
+
+//     const client = await Client.create({
+//       username,
+//       password,
+//       email,
+//     });
+
+//     await client.save();
+//     return res.json(
+//       new sucResponse(true, 200, 'Account Created Successfully', client),
+//     );
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const signup = async (req: any, res: any, next: any) => {
   try {
     const { username, email, password } = req.body;
+
+    console.log('Request Body:', req.body); // Debugging
 
     if (!username || !email || !password) {
       throw new errResponse('Kindly Provide all arguments', 400);
@@ -22,17 +54,21 @@ export const signup = async (req: any, res: any, next: any) => {
       email,
     });
 
+    console.log('Client Created:', client); // Debugging
+
     await client.save();
     return res.json(
       new sucResponse(true, 200, 'Account Created Successfully', client),
     );
   } catch (error) {
+    console.error('Signup Error:', error); // Debugging
     next(error);
   }
 };
 
 export const signin = async (req: any, res: any, next: any) => {
   try {
+    console.log(req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -54,8 +90,10 @@ export const signin = async (req: any, res: any, next: any) => {
     const token = await client.generateToken();
 
     const options = {
-      sameSite: 'None',
-      secure: true,
+      //   sameSite: 'None',
+      //   secure: true,
+      sameState: 'Lax',
+      secure: false,
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     };

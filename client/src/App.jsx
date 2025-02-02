@@ -1,26 +1,37 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Profile from "./pages/Profile";
-import Header from "./components/Header";
-import PrivateRoute from "./components/PrivateRoute.jsx";
+import React, { useState } from "react";
+import Signup from "./components/Signup";
+import Signin from "./components/Signin";
+import Profile from "./components/Profile";
 
-export default function App() {
+const App = () => {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken("");
+  };
+
   return (
-    <BrowserRouter>
-      {/* header */}
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+      <h1 className="text-3xl font-bold mb-8">Welcome to the App</h1>
+      {!token ? (
+        <div className="flex space-x-4">
+          <Signup setToken={setToken} />
+          <Signin setToken={setToken} />
+        </div>
+      ) : (
+        <div>
+          <Profile token={token} />
+          <button
+            onClick={handleLogout}
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
   );
-}
+};
+
+export default App;

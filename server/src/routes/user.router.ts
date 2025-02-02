@@ -1,14 +1,12 @@
-import { Router } from "express";
-import { IAM, logout, signin, signup } from "../controller/user.controller";
-import { authMiddleware } from "../middleware/auth.middleware";
+import { Router } from 'express';
+import { IAM, logout, signin, signup } from '../controller/user.controller';
+import { authMiddleware } from '../middleware/auth.middleware';
 
-const router = Router()
+const router = Router();
 
-router.route('/signup').post(signup)
-router.route('/signin').post(signin)
-router.route('/logout').post(authMiddleware,logout)
-router.route('/IAM').get(authMiddleware,IAM)
+router.route('/signup').post(signup);
+router.route('/signin').post(signin);
+router.route('/logout').post(authMiddleware, logout);
+router.route('/IAM').get(authMiddleware, IAM);
 
-
-
-export default router
+export default router;
