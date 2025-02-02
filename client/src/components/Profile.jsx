@@ -5,20 +5,28 @@ const Profile = ({ token }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      console.log("Token:", token); // Debugging
-      const response = await fetch("http://localhost:6969/api/v1/user/iam", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      console.log("Response:", data); // Debugging
-      if (data.success) {
-        setUser(data.data);
+      try {
+        console.log("Token:", token);
+        const response = await fetch("http://localhost:6969/api/v1/user/IAM", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the header
+          },
+        });
+
+        const data = await response.json();
+        console.log("Response:", data); // Debugging
+        if (data.success) {
+          setUser(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     };
-    fetchUser();
+
+    if (token) {
+      fetchUser();
+    }
   }, [token]);
 
   return (

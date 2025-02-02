@@ -4,39 +4,39 @@ import errResponse from '../utils/errResponse';
 
 export const authMiddleware = async (req: any, res: any, next: any) => {
   try {
-    // Extract token from cookies
-    const { token } = req.cookies;
-    console.log('Token:', token); // Debugging
+    // Extract token from the Authorization header
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
-      throw new errResponse('Unauthenticated', 400);
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new errResponse('Unauthenticated: No token provided', 401);
     }
 
-    // Verify JWT_SECRET is defined
+    const token = authHeader.split(' ')[1];
+
+    if (!token) {
+      throw new errResponse('Unauthenticated: Invalid token format', 401);
+    }
+
     const JWT_SECRET = process.env.JWT_SECRET;
     if (!JWT_SECRET) {
       throw new Error('JWT_SECRET is not defined in the environment variables');
     }
 
-    // Verify the token
     const decoded: any = jwt.verify(token, JWT_SECRET);
-    console.log('Decoded Token:', decoded); // Debugging
 
     const { _id } = decoded;
 
     if (!_id) {
-      throw new errResponse('Unauthenticated', 400);
+      throw new errResponse('Unauthenticated: Invalid token payload', 401);
     }
 
     // Find the user by ID
     const client = await Client.findById(_id).select('+role');
-    console.log('Client:', client); // Debugging
 
     if (!client) {
-      throw new errResponse('User not found', 400);
+      throw new errResponse('User not found', 404);
     }
 
-    // Attach the user to the request object
     req.user = client;
     next();
   } catch (error) {

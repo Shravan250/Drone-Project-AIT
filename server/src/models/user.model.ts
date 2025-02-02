@@ -52,6 +52,7 @@ clientSchema.methods.isPasswordValid = async function (password: string) {
 clientSchema.methods.generateToken = async function () {
   try {
     const key = process.env.JWT_SECRET;
+    console.log(key);
 
     if (!key) {
       throw new Error('JWT_SECRET is not defined');

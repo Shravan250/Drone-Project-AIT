@@ -78,7 +78,7 @@ export const signin = async (req: any, res: any, next: any) => {
     const client = await Client.findOne({ email }).select('+password');
 
     if (!client) {
-      throw new errResponse('User doesnt exist', 400);
+      throw new errResponse("User doesn't exist", 400);
     }
 
     const isMatch = await client.isPasswordValid(password);
@@ -88,18 +88,20 @@ export const signin = async (req: any, res: any, next: any) => {
     }
 
     const token = await client.generateToken();
+    console.log(token);
 
     const options = {
-      //   sameSite: 'None',
-      //   secure: true,
-      sameState: 'Lax',
-      secure: false,
+      sameSite: 'Lax', // Ensure correct value
+      secure: process.env.NODE_ENV === 'production', // Secure for production
       httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     };
 
+    res.cookie('token', token, options);
+    console.log('Cookie options:', options); // Debugging info
+
     return res
-      .cookie('token', token, options)
+      .status(200)
       .json(new sucResponse(true, 200, 'Login Success', { token }));
   } catch (error) {
     next(error);
