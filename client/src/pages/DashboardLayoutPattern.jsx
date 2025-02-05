@@ -7,10 +7,12 @@ import Typography from "@mui/material/Typography";
 import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ExploreIcon from "@mui/icons-material/Explore";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { useDemoRouter } from "@toolpad/core/internal";
 import Dashboard from "../components/Dashboard";
+import ExploreContent from "../components/ExploreContent";
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -39,33 +41,7 @@ function PageContent({ pathname, navigate }) {
         textAlign: "center",
       }}
     >
-      {pathname.startsWith("/orders") ? (
-        <Stack direction="row" spacing={1} sx={{ pt: 1 }}>
-          <Button
-            onClick={() => {
-              navigate("/orders/1");
-            }}
-          >
-            Order 1
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/orders/2");
-            }}
-          >
-            Order 2
-          </Button>
-          <Button
-            onClick={() => {
-              navigate("/orders/3");
-            }}
-          >
-            Order 3
-          </Button>
-        </Stack>
-      ) : (
-        <Dashboard />
-      )}
+      {pathname.startsWith("/dashboard") ? <Dashboard /> : <ExploreContent />}
     </Box>
   );
 }
@@ -78,7 +54,7 @@ PageContent.propTypes = {
 function DashboardLayoutPattern(props) {
   const { window } = props;
 
-  const router = useDemoRouter("/orders");
+  const router = useDemoRouter("/dashboard");
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window !== undefined ? window() : undefined;
@@ -93,10 +69,9 @@ function DashboardLayoutPattern(props) {
           icon: <DashboardIcon />,
         },
         {
-          segment: "orders",
-          title: "Orders",
-          icon: <ShoppingCartIcon />,
-          pattern: "orders{/:orderId}*",
+          segment: "explore",
+          title: "Explore",
+          icon: <ExploreIcon />,
         },
       ]}
       router={router}
