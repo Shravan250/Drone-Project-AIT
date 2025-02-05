@@ -10,6 +10,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { useDemoRouter } from "@toolpad/core/internal";
+import Dashboard from "../components/Dashboard";
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -27,7 +28,7 @@ const demoTheme = createTheme({
   },
 });
 
-function DemoPageContent({ pathname, navigate }) {
+function PageContent({ pathname, navigate }) {
   return (
     <Box
       sx={{
@@ -38,9 +39,6 @@ function DemoPageContent({ pathname, navigate }) {
         textAlign: "center",
       }}
     >
-      <Typography>
-        <p>Dashboard content for {pathname}</p>
-      </Typography>
       {pathname.startsWith("/orders") ? (
         <Stack direction="row" spacing={1} sx={{ pt: 1 }}>
           <Button
@@ -65,12 +63,14 @@ function DemoPageContent({ pathname, navigate }) {
             Order 3
           </Button>
         </Stack>
-      ) : null}
+      ) : (
+        <Dashboard />
+      )}
     </Box>
   );
 }
 
-DemoPageContent.propTypes = {
+PageContent.propTypes = {
   navigate: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
 };
@@ -104,10 +104,7 @@ function DashboardLayoutPattern(props) {
       window={demoWindow}
     >
       <DashboardLayout>
-        <DemoPageContent
-          pathname={router.pathname}
-          navigate={router.navigate}
-        />
+        <PageContent pathname={router.pathname} navigate={router.navigate} />
       </DashboardLayout>
     </AppProvider>
     // preview-end
