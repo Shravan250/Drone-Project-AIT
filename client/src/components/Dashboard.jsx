@@ -20,7 +20,7 @@ export default function Dashboard({ pathname, navigate }) {
     if (inputValue.trim()) {
       setMessages([...messages, { text: inputValue, sender: "user" }]);
       setInputValue("");
-      setShowWelcomeText(false); // Hide the welcome text
+      setShowWelcomeText(false);
     }
   };
 

@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 
 const CardGrid = () => {
   return (
-    <Box className="grid-cols-2 grid mx-5 gap-3 p-2 mt-2">
+    <Box className="grid-cols-2 grid mx-5 gap-4 p-2 mt-2">
       <Card />
       <Card />
       <Card />

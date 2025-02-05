@@ -4,35 +4,41 @@ import {
   CardContent,
   Typography,
   Button,
-  Grid,
   Box,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 export default function VideoMakerCard() {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Card
       sx={{
         maxWidth: 600,
         borderRadius: 2,
         boxShadow: 3,
-        backgroundColor: "#121212",
+        backgroundColor: "#212121",
         color: "#fff",
         display: "flex",
+        flexDirection: isSmallScreen ? "column" : "row",
       }}
     >
-      {/* Image on the left */}
+      {/* Image */}
       <Box
         sx={{
-          width: "30%",
+          width: isSmallScreen ? "100%" : "30%",
+          height: isSmallScreen ? 200 : "auto",
           backgroundImage:
             "url(https://cdn.pixabay.com/photo/2025/02/02/01/20/grizzly-9375881_1280.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          borderRadius: "8px 0 0 8px",
+          borderRadius: isSmallScreen ? "8px 8px 0 0" : "8px 0 0 8px",
         }}
       />
 
-      {/* Content on the right */}
+      {/* Content */}
       <CardContent
         sx={{
           flex: 1,
@@ -61,8 +67,7 @@ export default function VideoMakerCard() {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
+            justifyContent: isSmallScreen ? "center" : "flex-start",
           }}
         >
           <Button
