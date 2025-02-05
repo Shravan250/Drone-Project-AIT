@@ -5,6 +5,8 @@ import DashboardLayoutPattern from "./pages/DashboardLayoutPattern";
 import SignInPage from "./pages/SignInPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+import ExploreContent from "./components/ExploreContent";
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -13,6 +15,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<SignInPage />} />
+          <Route path="/explore" element={<ExploreContent />} />
           <Route
             path="/"
             element={

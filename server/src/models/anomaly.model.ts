@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 // Define the interface for the Drone Anomaly schema
 
@@ -49,13 +49,12 @@ const droneAnomalySchema = new mongoose.Schema(
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
-  }
+  },
 );
 
-
 const DroneAnomaly = mongoose.model<IDroneAnomaly>(
-  "DroneAnomaly",
-  droneAnomalySchema
+  'DroneAnomaly',
+  droneAnomalySchema,
 );
 
 export default DroneAnomaly;

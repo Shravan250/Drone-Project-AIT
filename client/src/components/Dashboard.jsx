@@ -7,6 +7,7 @@ import {
   TextField,
   IconButton,
   Fade,
+  useTheme,
 } from "@mui/material";
 import { Mic, Search, AttachFile } from "@mui/icons-material";
 
@@ -15,6 +16,7 @@ export default function Dashboard({ pathname, navigate }) {
   const [inputValue, setInputValue] = useState("");
   const [showWelcomeText, setShowWelcomeText] = useState(true);
   const fileInputRef = useRef(null);
+  const theme = useTheme();
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
@@ -47,8 +49,8 @@ export default function Dashboard({ pathname, navigate }) {
         alignItems: "center",
         textAlign: "center",
         width: "100%",
-        backgroundColor: "#121212",
-        color: "#fff",
+        backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#fff",
+        color: theme.palette.text.primary,
         height: "100vh",
       }}
     >
@@ -57,7 +59,7 @@ export default function Dashboard({ pathname, navigate }) {
           width: "60%",
           padding: 2,
           borderRadius: 2,
-          color: "#fff",
+          color: theme.palette.text.primary,
         }}
       >
         <Fade in={showWelcomeText} timeout={500}>
@@ -84,8 +86,15 @@ export default function Dashboard({ pathname, navigate }) {
               sx={{
                 alignSelf:
                   message.sender === "user" ? "flex-end" : "flex-start",
-                backgroundColor: message.sender === "user" ? "#333" : "#2A2A2A",
-                color: "#fff",
+                backgroundColor:
+                  message.sender === "user"
+                    ? theme.palette.mode === "dark"
+                      ? "#333"
+                      : "#e0e0e0"
+                    : theme.palette.mode === "dark"
+                      ? "#2A2A2A"
+                      : "#f5f5f5",
+                color: theme.palette.text.primary,
                 borderRadius: 2,
                 p: 1,
                 mb: 2,
@@ -101,7 +110,8 @@ export default function Dashboard({ pathname, navigate }) {
           sx={{
             display: "flex",
             alignItems: "center",
-            backgroundColor: "#2A2A2A",
+            backgroundColor:
+              theme.palette.mode === "dark" ? "#2A2A2A" : "#f5f5f5",
             borderRadius: 2,
             p: 1,
             width: "100%",
@@ -117,7 +127,7 @@ export default function Dashboard({ pathname, navigate }) {
           />
 
           <IconButton onClick={handleAttachFileClick}>
-            <AttachFile sx={{ color: "#bbb" }} />
+            <AttachFile sx={{ color: theme.palette.text.secondary }} />
           </IconButton>
           <TextField
             variant="standard"
@@ -127,41 +137,17 @@ export default function Dashboard({ pathname, navigate }) {
             onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
             InputProps={{
               disableUnderline: true,
-              sx: { color: "#fff", flex: 1 },
+              sx: { color: theme.palette.text.primary, flex: 1 },
             }}
             sx={{ flex: 1, ml: 1 }}
           />
           <IconButton>
-            <Mic sx={{ color: "#bbb" }} />
+            <Mic sx={{ color: theme.palette.text.secondary }} />
           </IconButton>
           <IconButton onClick={handleSendMessage}>
-            <Search sx={{ color: "#bbb" }} />
+            <Search sx={{ color: theme.palette.text.secondary }} />
           </IconButton>
         </Box>
-
-        {/* <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
-        {[
-          "Create image",
-          "Surprise me",
-          "Code",
-          "Make a plan",
-          "Summarize text",
-          "More",
-        ].map((label) => (
-          <Button
-            key={label}
-            variant="contained"
-            sx={{
-              backgroundColor: "#333",
-              color: "#bbb",
-              textTransform: "none",
-              "&:hover": { backgroundColor: "#444" },
-            }}
-          >
-            {label}
-          </Button>
-        ))}
-      </Stack> */}
       </Box>
     </Box>
   );
